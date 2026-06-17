@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Special Invitation 💕</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --pink: #ff6b9d;
+    --rose: #ff4d6d;
+    --purple: #c77dff;
+    --lavender: #e0aaff;
+    --deep-purple: #7b2d8b;
+    --light: rgba(255,255,255,0.95);
+    --glass: rgba(255,255,255,0.15);
+    --glass-border: rgba(255,255,255,0.3);
+  }
+
+  body {
+    font-family: 'Lato', sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #ff6b9d 0%, #c44dff 35%, #7b2d8b 65%, #ff4d6d 100%);
+    background-size: 400% 400%;
+    animation: gradientShift 8s ease infinite;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  @keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  /* Floating hearts bg */
+  .bg-hearts { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; overflow: hidden; }
+  .bg-heart {
+    position: absolute;
+    opacity: 0.12;
+    animation: floatUp linear infinite;
+    color: white;
+    font-size: 1.5rem;
+    bottom: -60px;
+  }
+  @keyframes floatUp {
+    0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 0.12; }
+    50% { opacity: 0.18; }
+    100% { transform: translateY(-110vh) rotate(360deg) scale(0.5); opacity: 0; }
+  }
+
+  /* Cursor hearts */
+  .cursor-heart {
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    font-size: 1rem;
+    animation: cursorHeartFade 1s ease forwards;
+    color: #ff6b9d;
+    text-shadow: 0 0 6px rgba(255,107,157,0.8);
+  }
+  @keyframes cursorHeartFade {
+    0% { transform: translateY(0) scale(1); opacity: 1; }
+    100% { transform: translateY(-60px) scale(0.3); opacity: 0; }
+  }
+
+  /* Pages */
+  .page { display: none; position: relative; z-index: 1; min-height: 100vh; padding: 2rem 1rem; }
+  .page.active { display: flex; align-items: center; justify-content: center; flex-direction: column; }
+
+  /* Glass card */
+  .card {
+    background: rgba(255,255,255,0.18);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.35);
+    border-radius: 28px;
+    padding: 3rem 2.5rem;
+    max-width: 620px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.4);
+    animation: cardIn 0.7s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  @keyframes cardIn {
+    from { transform: translateY(40px) scale(0.92); opacity: 0; }
+    to { transform: translateY(0) scale(1); opacity: 1; }
+  }
+
+  .gif-frame {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid rgba(255,255,255,0.5);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    margin: 0 auto 1.5rem;
+    display: block;
+  }
+  .gif-emoji {
+    font-size: 5rem;
+    display: block;
+    margin: 0 auto 1.2rem;
+    animation: pulse 2s ease infinite;
+    line-height: 1;
+  }
+  @keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.12); } }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 5vw, 2.6rem);
+    color: #fff;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.2);
+    line-height: 1.25;
+  }
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.4rem, 4vw, 2rem);
+    color: #fff;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  }
+
+  .subtitle {
+    color: rgba(255,255,255,0.9);
+    font-size: 1.05rem;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+    font-weight: 300;
+  }
+
+  /* Typing cursor */
+  .typing-cursor::after {
+    content: '|';
+    animation: blink 0.7s step-end infinite;
+    color: var(--lavender);
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  /* Countdown */
+  .countdown {
+    display: inline-block;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 50px;
+    padding: 0.4rem 1.2rem;
+    color: rgba(255,255,255,0.85);
+    font-size: 0.85rem;
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.03em;
+  }
+  .countdown span { color: var(--lavender); font-weight: 700; }
+
+  /* Buttons */
+  .btn-row {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 0.5rem;
+    position: relative;
+    min-height: 140px;
+    align-items: flex-start;
+    padding-top: 10px;
+  }
+
+  .btn {
+    font-family: 'Lato', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    padding: 0.85rem 2.2rem;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+    letter-spacing: 0.04em;
+    outline: none;
+  }
+
+  .btn-yes {
+    background: linear-gradient(135deg, #ff6b9d, #ff4d6d);
+    color: white;
+    box-shadow: 0 6px 24px rgba(255,77,109,0.45);
+  }
+  .btn-yes:hover { transform: scale(1.06) translateY(-2px); box-shadow: 0 10px 32px rgba(255,77,109,0.55); }
+  .btn-yes:active { transform: scale(0.98); }
+
+  .btn-no {
+    background: rgba(255,255,255,0.18);
+    color: rgba(255,255,255,0.85);
+    border: 1px solid rgba(255,255,255,0.4);
+    position: relative;
+    transition: top 0.35s cubic-bezier(0.34,1.56,0.64,1), left 0.35s cubic-bezier(0.34,1.56,0.64,1);
+    white-space: nowrap;
+  }
+  .btn-no.jumped {
+    position: absolute;
+  }
+
+  .btn-confirm {
+    background: linear-gradient(135deg, #ff6b9d, #c44dff);
+    color: white;
+    box-shadow: 0 6px 24px rgba(196,77,255,0.4);
+    font-size: 1.1rem;
+    padding: 1rem 2.5rem;
+    margin-top: 1.5rem;
+  }
+  .btn-confirm:hover { transform: scale(1.05) translateY(-2px); box-shadow: 0 10px 32px rgba(196,77,255,0.5); }
+
+  /* Food section */
+  .section-label {
+    font-family: 'Playfair Display', serif;
+    color: rgba(255,255,255,0.9);
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin: 1.5rem 0 0.8rem;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .food-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 0.7rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .food-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.85rem 0.5rem;
+    background: rgba(255,255,255,0.12);
+    border: 1.5px solid rgba(255,255,255,0.22);
+    border-radius: 16px;
+    cursor: pointer;
+    transition: all 0.22s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .food-option:hover { background: rgba(255,255,255,0.22); border-color: rgba(255,255,255,0.5); transform: translateY(-2px); }
+  .food-option.selected { background: rgba(255,107,157,0.35); border-color: #ff6b9d; box-shadow: 0 0 0 2px rgba(255,107,157,0.4); }
+  .food-option input[type="radio"] { display: none; }
+  .food-emoji { font-size: 2rem; line-height: 1; }
+  .food-name { font-size: 0.8rem; color: rgba(255,255,255,0.9); font-weight: 700; text-align: center; }
+
+  .food-msg {
+    text-align: center;
+    color: var(--lavender);
+    font-size: 0.95rem;
+    font-weight: 700;
+    min-height: 1.4em;
+    margin: 0.5rem 0;
+    animation: fadeInUp 0.4s ease;
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+  }
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Dropdowns */
+  .styled-select {
+    width: 100%;
+    padding: 0.85rem 1.2rem;
+    background: rgba(255,255,255,0.14);
+    border: 1.5px solid rgba(255,255,255,0.3);
+    border-radius: 14px;
+    color: rgba(255,255,255,0.92);
+    font-size: 1rem;
+    font-family: 'Lato', sans-serif;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.7)' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 18px;
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.2s ease;
+    margin-bottom: 0.2rem;
+  }
+  .styled-select:focus { border-color: rgba(255,255,255,0.65); background-color: rgba(255,255,255,0.2); }
+  .styled-select option { background: #7b2d8b; color: white; }
+
+  /* Validation */
+  .error-msg { color: #ffb3c6; font-size: 0.82rem; margin-top: 0.3rem; display: none; text-align: left; }
+  .error-msg.show { display: block; animation: shake 0.35s ease; }
+  @keyframes shake { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+
+  /* Final page */
+  #page-final .card { max-width: 680px; }
+  .confetti-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+  .confetti-piece {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    top: -20px;
+    animation: confettiFall linear forwards;
+    border-radius: 2px;
+  }
+  @keyframes confettiFall {
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+  }
+
+  .floating-hearts-final { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+  .float-heart-final {
+    position: absolute;
+    bottom: -40px;
+    font-size: clamp(1.2rem, 3vw, 2rem);
+    animation: riseHeart linear infinite;
+    opacity: 0;
+  }
+  @keyframes riseHeart {
+    0% { transform: translateY(0) scale(1); opacity: 0; }
+    20% { opacity: 0.85; }
+    80% { opacity: 0.6; }
+    100% { transform: translateY(-110vh) scale(0.4); opacity: 0; }
+  }
+
+  .summary-box {
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 18px;
+    padding: 1.2rem 1.5rem;
+    margin: 1.2rem 0;
+    text-align: left;
+  }
+  .summary-row {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.55rem 0;
+    color: rgba(255,255,255,0.9);
+    font-size: 1rem;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  .summary-row:last-child { border-bottom: none; }
+  .summary-label { color: rgba(255,255,255,0.55); font-size: 0.82rem; min-width: 90px; }
+  .summary-val { font-weight: 700; color: var(--lavender); }
+
+  .thank-msg {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    color: rgba(255,255,255,0.9);
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-top: 1rem;
+  }
+
+  /* Responsive */
+  @media (max-width: 500px) {
+    .card { padding: 2rem 1.3rem; }
+    .food-grid { grid-template-columns: repeat(3, 1fr); }
+    .btn-row { gap: 0.8rem; }
+  }
+
+  /* Scroll for page 2 */
+  #page-food .card { max-height: 92vh; overflow-y: auto; scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.3) transparent; }
+  #page-food .card::-webkit-scrollbar { width: 5px; }
+  #page-food .card::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.3); border-radius: 10px; }
+
+  .divider { height: 1px; background: rgba(255,255,255,0.15); margin: 1.2rem 0; }
+</style>
+</head>
+<body>
+
+<!-- Background floating hearts -->
+<div class="bg-hearts" id="bgHearts"></div>
+
+<!-- PAGE 1: Invitation -->
+<div class="page active" id="page-invite">
+  <div class="card">
+    <span class="gif-emoji" id="mainEmoji">💝</span>
+
+    <div class="countdown" id="countdown">⏳ Waiting for your answer... <span id="timer">60</span>s ❤️</div>
+
+    <h1 id="mainHeading" class="typing-cursor"></h1>
+
+    <p class="subtitle">Life feels a little more special when shared with someone amazing. I'd love to spend some time with you. 😊💕</p>
+
+    <div class="btn-row" id="btnRow">
+      <button class="btn btn-yes" onclick="handleYes()">❤️ Yes</button>
+      <button class="btn btn-no" id="noBtn" onmouseover="moveNoBtn()" onclick="moveNoBtn()">😢 No</button>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 2: Food & Details -->
+<div class="page" id="page-food">
+  <div class="card">
+    <span style="font-size:3rem;display:block;margin-bottom:0.8rem;animation:pulse 1.5s ease infinite;">🥰</span>
+    <h2>Yay! You said YES! 😍</h2>
+    <p class="subtitle" style="margin-bottom:0.5rem;">Now let's plan our perfect date...</p>
+
+    <div class="divider"></div>
+
+    <p class="section-label"><i class="fa-solid fa-utensils" style="color:var(--lavender)"></i> What shall we eat?</p>
+    <div class="food-grid" id="foodGrid">
+      <label class="food-option" onclick="selectFood(this,'Pizza','Excellent choice! 🍕❤️')">
+        <input type="radio" name="food" value="🍕 Pizza">
+        <span class="food-emoji">🍕</span><span class="food-name">Pizza</span>
+      </label>
+      <label class="food-option" onclick="selectFood(this,'Burger','Burger lovers never disappoint! 🍔🔥')">
+        <input type="radio" name="food" value="🍔 Burger">
+        <span class="food-emoji">🍔</span><span class="food-name">Burger</span>
+      </label>
+      <label class="food-option" onclick="selectFood(this,'French Fries','Fries and good vibes! 🍟✨')">
+        <input type="radio" name="food" value="🍟 French Fries">
+        <span class="food-emoji">🍟</span><span class="food-name">French Fries</span>
+      </label>
+      <label class="food-option" onclick="selectFood(this,'Tacos','Taco Tuesday energy! 🌮💃')">
+        <input type="radio" name="food" value="🌮 Tacos">
+        <span class="food-emoji">🌮</span><span class="food-name">Tacos</span>
+      </label>
+      <label class="food-option" onclick="selectFood(this,'Sandwich','Simple, sweet, just like you! 🥪💛')">
+        <input type="radio" name="food" value="🥪 Sandwich">
+        <span class="food-emoji">🥪</span><span class="food-name">Sandwich</span>
+      </label>
+      <label class="food-option" onclick="selectFood(this,'Coffee','Coffee date sounds perfect! ☕😊')">
+        <input type="radio" name="food" value="☕ Coffee">
+        <span class="food-emoji">☕</span><span class="food-name">Coffee</span>
+      </label>
+      <label class="food-option" onclick="selectFood(this,'Cold Coffee','A chill date with cold coffee! 🧋💕')">
+        <input type="radio" name="food" value="🧋 Cold Coffee">
+        <span class="food-emoji">🧋</span><span class="food-name">Cold Coffee</span>
+      </label>
+      <label class="food-option" onclick="selectFood(this,'White Sauce Pasta','Fancy choice! 🍝✨')">
+        <input type="radio" name="food" value="🍝 White Sauce Pasta">
+        <span class="food-emoji">🍝</span><span class="food-name">Pasta</span>
+      </label>
+      <label class="food-option" onclick="selectFood(this,'Noodles','Noodle nights are the best nights! 🍜🌙')">
+        <input type="radio" name="food" value="🍜 Noodles">
+        <span class="food-emoji">🍜</span><span class="food-name">Noodles</span>
+      </label>
+      <label class="food-option" onclick="selectFood(this,'Chocolate Cake','Sweet tooth! You&apos;re sweeter though! 🍰💖')">
+        <input type="radio" name="food" value="🍰 Chocolate Cake">
+        <span class="food-emoji">🍰</span><span class="food-name">Choco Cake</span>
+      </label>
+    </div>
+    <div class="food-msg" id="foodMsg"></div>
+    <div class="error-msg" id="errFood">💫 Please pick something yummy!</div>
+
+    <div class="divider"></div>
+
+    <p class="section-label"><i class="fa-regular fa-clock" style="color:var(--lavender)"></i> When works for you?</p>
+    <select class="styled-select" id="timeSelect">
+      <option value="">Choose Your Preferred Time ⏰</option>
+      <option value="Saturday 7 PM – 8 PM">🌆 Saturday 7 PM – 8 PM</option>
+      <option value="Saturday 8 PM – 9 PM">🌃 Saturday 8 PM – 9 PM</option>
+      <option value="Saturday 9 PM – 10 PM">🌌 Saturday 9 PM – 10 PM</option>
+    </select>
+    <div class="error-msg" id="errTime">⏰ Please pick a time for our date!</div>
+
+    <div class="divider"></div>
+
+    <p class="section-label"><i class="fa-solid fa-location-dot" style="color:var(--lavender)"></i> Where shall we go?</p>
+    <select class="styled-select" id="placeSelect">
+      <option value="">Choose Date Place 📍</option>
+      <option value="☕ Coffee Cafe">☕ Coffee Cafe</option>
+      <option value="🍕 Pizza Hut">🍕 Pizza Hut</option>
+      <option value="🍔 Burger King">🍔 Burger King</option>
+      <option value="🍝 Italian Restaurant">🍝 Italian Restaurant</option>
+      <option value="🎬 Movie & Dinner">🎬 Movie & Dinner</option>
+      <option value="🌳 Garden Walk">🌳 Garden Walk</option>
+    </select>
+    <div class="error-msg" id="errPlace">📍 Please choose where we'll go!</div>
+
+    <button class="btn btn-confirm" onclick="confirmDate()"><i class="fa-solid fa-heart"></i> Confirm Our Date ❤️</button>
+  </div>
+</div>
+
+<!-- PAGE 3: Final -->
+<div class="page" id="page-final">
+  <div class="confetti-container" id="confettiContainer"></div>
+  <div class="floating-hearts-final" id="finalHearts"></div>
+  <div class="card" style="position:relative;z-index:2;">
+    <span style="font-size:4rem;display:block;margin-bottom:0.8rem;animation:pulse 1.8s ease infinite;">🥂</span>
+    <h1 style="font-size:clamp(1.5rem,4vw,2.2rem);">Yay! Our Date Is Officially Planned! ❤️🥰</h1>
+
+    <div class="summary-box">
+      <div class="summary-row">
+        <span class="summary-label">🍽️ Food</span>
+        <span class="summary-val" id="finalFood"></span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">⏰ Time</span>
+        <span class="summary-val" id="finalTime"></span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">📍 Place</span>
+        <span class="summary-val" id="finalPlace"></span>
+      </div>
+    </div>
+
+    <p class="thank-msg">
+      "Thank you for saying YES! I can't wait to see you. 🌹✨❤️"
+    </p>
+
+    <div style="margin-top:1.5rem;font-size:2rem;letter-spacing:0.3rem;animation:pulse 2s ease infinite;">
+      💕 🌹 ✨ 💫 🌸
+    </div>
+  </div>
+</div>
+
+<script>
+  // ── Background floating hearts ──
+  const bgHearts = document.getElementById('bgHearts');
+  const heartChars = ['♥','❤','💕','💗','💖','💝','🌸','✿'];
+  for (let i = 0; i < 18; i++) {
+    const h = document.createElement('span');
+    h.className = 'bg-heart';
+    h.textContent = heartChars[i % heartChars.length];
+    h.style.left = (Math.random() * 100) + '%';
+    h.style.animationDuration = (8 + Math.random() * 14) + 's';
+    h.style.animationDelay = (Math.random() * 12) + 's';
+    h.style.fontSize = (1 + Math.random() * 2) + 'rem';
+    bgHearts.appendChild(h);
+  }
+
+  // ── Cursor hearts ──
+  let lastCursorHeart = 0;
+  document.addEventListener('mousemove', e => {
+    const now = Date.now();
+    if (now - lastCursorHeart < 120) return;
+    lastCursorHeart = now;
+    const h = document.createElement('span');
+    h.className = 'cursor-heart';
+    h.textContent = ['💗','💕','❤️','💖'][Math.floor(Math.random()*4)];
+    h.style.left = (e.clientX - 8) + 'px';
+    h.style.top = (e.clientY - 8) + 'px';
+    document.body.appendChild(h);
+    setTimeout(() => h.remove(), 1000);
+  });
+
+  // ── Typing animation ──
+  const heading = 'Hey, Shubham here. Will you go on a date with me? ❤️';
+  const el = document.getElementById('mainHeading');
+  let idx = 0;
+  function typeIt() {
+    if (idx <= heading.length) {
+      el.textContent = heading.slice(0, idx);
+      idx++;
+      setTimeout(typeIt, 65);
+    } else {
+      el.classList.remove('typing-cursor');
+    }
+  }
+  setTimeout(typeIt, 500);
+
+  // ── Countdown ──
+  let countdownVal = 60;
+  const timerEl = document.getElementById('timer');
+  const cdInterval = setInterval(() => {
+    countdownVal--;
+    timerEl.textContent = countdownVal;
+    if (countdownVal <= 0) {
+      clearInterval(cdInterval);
+      document.getElementById('countdown').innerHTML = '💭 Still thinking? Take your time! 💕';
+    }
+  }, 1000);
+
+  // ── No button dance (confined to card) ──
+  const noBtn = document.getElementById('noBtn');
+  const btnRow = document.getElementById('btnRow');
+
+  function moveNoBtn() {
+    const rowRect = btnRow.getBoundingClientRect();
+    const bw = noBtn.offsetWidth || 120;
+    const bh = noBtn.offsetHeight || 48;
+    const padding = 8;
+    const maxX = rowRect.width - bw - padding;
+    const maxY = btnRow.offsetHeight - bh - padding;
+    const randX = Math.max(padding, Math.floor(Math.random() * maxX));
+    const randY = Math.max(padding, Math.floor(Math.random() * Math.max(maxY, bh + 10)));
+    noBtn.classList.add('jumped');
+    noBtn.style.left = randX + 'px';
+    noBtn.style.top = randY + 'px';
+  }
+
+  // ── Yes button ──
+  function handleYes() {
+    // Soft tone
+    try {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const notes = [523.25, 659.25, 783.99, 1046.50];
+      notes.forEach((freq, i) => {
+        const o = ctx.createOscillator();
+        const g = ctx.createGain();
+        o.connect(g); g.connect(ctx.destination);
+        o.frequency.value = freq;
+        o.type = 'sine';
+        g.gain.setValueAtTime(0, ctx.currentTime + i * 0.18);
+        g.gain.linearRampToValueAtTime(0.18, ctx.currentTime + i * 0.18 + 0.05);
+        g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * 0.18 + 0.5);
+        o.start(ctx.currentTime + i * 0.18);
+        o.stop(ctx.currentTime + i * 0.18 + 0.6);
+      });
+    } catch(e) {}
+
+    clearInterval(cdInterval);
+    showPage('page-food');
+  }
+
+  // ── Food selection ──
+  let selectedFood = '';
+  function selectFood(el, name, msg) {
+    document.querySelectorAll('.food-option').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+    el.querySelector('input').checked = true;
+    selectedFood = el.querySelector('input').value;
+    const msgEl = document.getElementById('foodMsg');
+    msgEl.textContent = msg;
+    msgEl.style.animation = 'none';
+    void msgEl.offsetWidth;
+    msgEl.style.animation = 'fadeInUp 0.4s ease';
+    document.getElementById('errFood').classList.remove('show');
+  }
+
+  // ── Confirm ──
+  function confirmDate() {
+    const food = selectedFood;
+    const time = document.getElementById('timeSelect').value;
+    const place = document.getElementById('placeSelect').value;
+    let ok = true;
+    if (!food) { document.getElementById('errFood').classList.add('show'); ok = false; }
+    else document.getElementById('errFood').classList.remove('show');
+    if (!time) { document.getElementById('errTime').classList.add('show'); ok = false; }
+    else document.getElementById('errTime').classList.remove('show');
+    if (!place) { document.getElementById('errPlace').classList.add('show'); ok = false; }
+    else document.getElementById('errPlace').classList.remove('show');
+    if (!ok) return;
+
+    document.getElementById('finalFood').textContent = food;
+    document.getElementById('finalTime').textContent = time;
+    document.getElementById('finalPlace').textContent = place;
+
+    // Silent Google Form submission
+    const formUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSdtRqn9ysEbHXf60srwSXTTrC5oUfQM07ECLmX5OcZsM5ADLQ/formResponse';
+    const params = new URLSearchParams({
+      'entry.255953658': food,
+      'entry.1712769858': time,
+      'entry.1508055876': place
+    });
+    fetch(formUrl, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: params.toString()
+    }).catch(() => {}); // silently ignore any errors
+
+    showPage('page-final');
+    launchCelebration();
+  }
+
+  // ── Page transitions ──
+  function showPage(id) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ── Celebration ──
+  function launchCelebration() {
+    // Confetti
+    const colors = ['#ff6b9d','#ff4d6d','#c44dff','#e0aaff','#ffb3c6','#ffd6e7','#fff'];
+    const container = document.getElementById('confettiContainer');
+    for (let i = 0; i < 90; i++) {
+      const piece = document.createElement('div');
+      piece.className = 'confetti-piece';
+      piece.style.left = (Math.random() * 100) + 'vw';
+      piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+      piece.style.width = (6 + Math.random() * 8) + 'px';
+      piece.style.height = (6 + Math.random() * 8) + 'px';
+      piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+      piece.style.animationDuration = (2.5 + Math.random() * 3) + 's';
+      piece.style.animationDelay = (Math.random() * 2) + 's';
+      container.appendChild(piece);
+      setTimeout(() => piece.remove(), 6000);
+    }
+
+    // Rising hearts
+    const fh = document.getElementById('finalHearts');
+    fh.innerHTML = '';
+    const heartEmojis = ['❤️','💕','💖','💗','💝','🌹','✨','🌸','💫'];
+    for (let i = 0; i < 20; i++) {
+      const h = document.createElement('span');
+      h.className = 'float-heart-final';
+      h.textContent = heartEmojis[i % heartEmojis.length];
+      h.style.left = (Math.random() * 95) + '%';
+      h.style.animationDuration = (4 + Math.random() * 6) + 's';
+      h.style.animationDelay = (Math.random() * 4) + 's';
+      fh.appendChild(h);
+    }
+
+    // Celebration sound
+    try {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const melody = [523,659,784,880,1047,784,880,1047,1319];
+      melody.forEach((freq, i) => {
+        const o = ctx.createOscillator();
+        const g = ctx.createGain();
+        o.connect(g); g.connect(ctx.destination);
+        o.frequency.value = freq;
+        o.type = 'sine';
+        const t = ctx.currentTime + i * 0.14;
+        g.gain.setValueAtTime(0, t);
+        g.gain.linearRampToValueAtTime(0.15, t + 0.05);
+        g.gain.exponentialRampToValueAtTime(0.001, t + 0.45);
+        o.start(t); o.stop(t + 0.5);
+      });
+    } catch(e) {}
+  }
+</script>
+</body>
+</html>
